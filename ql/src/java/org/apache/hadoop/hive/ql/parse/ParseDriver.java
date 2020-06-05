@@ -219,6 +219,13 @@ public class ParseDriver {
       throw new ParseException(parser.errors);
     }
 
+    /** 
+     * create by James on 2020-06-05.
+     * TODO
+     * 
+     * Hive SQL解析过程
+     * 1. 将SQL转换为ASTNode过程如下（SQL->AST(Abstract Syntax Tree)）
+     */
     ASTNode tree = (ASTNode) r.getTree();
     tree.setUnknownTokenBoundaries();
     return tree;

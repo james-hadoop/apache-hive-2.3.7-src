@@ -48,6 +48,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Implementation of a post execute hook that logs lineage info to a log file.
@@ -171,6 +172,7 @@ public class LineageLogger implements ExecuteWithHookContext {
                 Set<Vertex> vertices = getVertices(edges);
                 /**
                  * create by James on 2020-06-05.
+                 * TODO
                  *
                  * 记录血缘关系的顶点和边
                  */
@@ -447,7 +449,14 @@ public class LineageLogger implements ExecuteWithHookContext {
             }
             writer.endArray();
             if (edge.expr != null) {
-                writer.name("expression").value(edge.expr);
+                /**
+                 * create by James on 2020-06-05.
+                 * TODO
+                 *
+                 * 将expression base64处理
+                 */
+//                writer.name("expression").value(edge.expr);
+                writer.name("expression").value(Base64.encodeBase64(edge.expr.getBytes()).toString());
             }
             writer.name("edgeType").value(edge.type.name());
             writer.endObject();

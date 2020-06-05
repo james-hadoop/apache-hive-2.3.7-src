@@ -133,6 +133,7 @@ import com.google.common.collect.Sets;
 
 /**
  * create by James on 2020-06-05.
+ * TODO
  *
  * SQL执行过程
  * 1. compile过程（SQL->AST(Abstract Syntax Tree)->QueryPlan）
@@ -540,6 +541,12 @@ public class Driver implements CommandProcessor {
 
       // get the output schema
       schema = getSchema(sem, conf);
+      /**
+       * create by James on 2020-06-05.
+       * TODO
+       *
+       * 生成QueryPlan
+       */
       plan = new QueryPlan(queryStr, sem, perfLogger.getStartTime(PerfLogger.DRIVER_RUN), queryId,
         queryState.getHiveOperation(), schema);
 

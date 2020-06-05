@@ -252,6 +252,13 @@ public abstract class BaseSemanticAnalyzer {
     this.ctx = ctx;
   }
 
+  /**
+   * create by James on 2020-06-05.
+   * TODO
+   *
+   * Hive SQL解析过程
+   * 2. analyze过程（AST(Abstract Syntax Tree)->Task）
+   */
   public void analyze(ASTNode ast, Context ctx) throws SemanticException {
     initCtx(ctx);
     init(true);
