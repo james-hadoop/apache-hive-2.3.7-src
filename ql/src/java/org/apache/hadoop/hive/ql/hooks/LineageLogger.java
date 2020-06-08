@@ -456,7 +456,7 @@ public class LineageLogger implements ExecuteWithHookContext {
                  * 将expression base64处理
                  */
 //                writer.name("expression").value(edge.expr);
-                writer.name("expression").value(Base64.encodeBase64(edge.expr.getBytes()).toString());
+                writer.name("expression").value(Base64.encodeBase64String(edge.expr.getBytes()).trim());
             }
             writer.name("edgeType").value(edge.type.name());
             writer.endObject();
