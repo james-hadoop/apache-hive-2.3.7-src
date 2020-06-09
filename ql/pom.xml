@@ -36,6 +36,12 @@
     <!-- intra-project -->
     <!-- used for vector code-gen -->
     <dependency>
+      <groupId>org.pentaho</groupId>
+      <artifactId>pentaho-aggdesigner-algorithm</artifactId>
+      <version>5.1.5-jhyde</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-vector-code-gen</artifactId>
       <version>${project.version}</version>
