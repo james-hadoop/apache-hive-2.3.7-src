@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class JamesMysqlUtil {
     private static final Logger LOG = LoggerFactory.getLogger(JamesMysqlUtil.class);
@@ -25,12 +29,32 @@ public class JamesMysqlUtil {
     static final String USER = "developer";
     static final String PASS = "developer";
 
-    public static void main(String[] args) {
-        String lineage = "lineage string";
-        insertLineageIntoMysql(lineage);
+    private static ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }
+    };
+
+    public static Date parse(String dateStr) throws ParseException {
+        return threadLocal.get().parse(dateStr);
     }
 
-    public static void insertLineageIntoMysql(String lineage) {
+    public static String format(Date date) {
+        return threadLocal.get().format(date);
+    }
+
+    public static void main(String[] args) {
+        Date date = new Date();
+        String formatDate = format(date);
+        System.out.print(String.format("formatDate=%s", formatDate));
+
+
+        String lineage = "lineage string";
+        insertLineageIntoMysql(lineage, formatDate);
+    }
+
+    public static void insertLineageIntoMysql(String lineage, String updateTime) {
         if (null == lineage || lineage.isEmpty()) {
             return;
         }
@@ -48,9 +72,10 @@ public class JamesMysqlUtil {
             LOG.info("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
-            String sql = "INSERT INTO hive_lineage_log(lineage_str) VALUES (?)";
+            String sql = "INSERT INTO txkd_dc_hive_lineage_log(lineage_str,update_time) VALUES (?,?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, lineage);
+            ps.setString(2, updateTime);
 
             int resultSet = ps.executeUpdate();
             if (resultSet > 0) {

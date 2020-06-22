@@ -22,6 +22,7 @@ import com.google.common.collect.Lists;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.google.gson.stream.JsonWriter;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.SetUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.apache.commons.lang.StringUtils;
@@ -48,7 +49,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
-import org.apache.commons.codec.binary.Base64;
+
 
 /**
  * Implementation of a post execute hook that logs lineage info to a log file.
@@ -195,7 +196,9 @@ public class LineageLogger implements ExecuteWithHookContext {
                     LOG.info(lineage);
                     LOG.info("----------------------------------------------------------------");
                     LOG.info("* start inserting lineage into mysql");
-                    JamesMysqlUtil.insertLineageIntoMysql(lineage.toString());
+                    Date date = new Date();
+                    String formatDate = JamesMysqlUtil.format(date);
+                    JamesMysqlUtil.insertLineageIntoMysql(lineage, formatDate);
                     LOG.info("* stop inserting lineage into mysql");
                 }
             } catch (Throwable t) {
@@ -222,7 +225,7 @@ public class LineageLogger implements ExecuteWithHookContext {
      */
     /**
      * create by James on 2020-06-05.
-     *
+     * <p>
      * 解析血缘关系的边
      */
     private List<Edge> getEdges(QueryPlan plan, Index index) {
@@ -407,7 +410,7 @@ public class LineageLogger implements ExecuteWithHookContext {
      */
     /**
      * create by James on 2020-06-05.
-     *
+     * <p>
      * 解析血缘关系的顶点
      */
     private Set<Vertex> getVertices(List<Edge> edges) {
